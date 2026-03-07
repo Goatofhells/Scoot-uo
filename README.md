@@ -1,5 +1,7 @@
 # scoot ui library
 
+![preview](https://raw.githubusercontent.com/Goatofhells/Scoot-uo/refs/heads/main/Screenshot_20260307-002712.Roblox.png)
+
 ```lua
 local UI = loadstring(game:HttpGet('https://raw.githubusercontent.com/Goatofhells/Scoot-uo/refs/heads/main/scootuilib.lua'))()
 ```
@@ -278,6 +280,16 @@ UI:GetConfig()
 UI:LoadConfig("name")
 UI:SaveConfig("name")
 UI:DeleteConfig("name")
+```
+
+---
+
+## Set Font
+
+Call after `UI:Window()`. Pass any Roblox font asset ID.
+
+```lua
+UI:SetFont(12187375716)
 ```
 
 ---
