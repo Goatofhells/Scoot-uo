@@ -284,6 +284,56 @@ UI:DeleteConfig("name")
 
 ---
 
+## Image Button
+
+Same as Button but with an icon. Pass a Roblox asset ID as the icon.
+
+```lua
+local IB = Section:ImageButton()
+IB:Add("Teleport", 6031068421, function() end)
+IB:Add("Rejoin",   6031302502, function() end)
+```
+
+`IB:Add(label, iconId, callback)` → `NewButton`
+`NewButton:Press()`
+`NewButton:SetVisibility(bool)`
+
+---
+
+## Divider
+
+A horizontal line to separate elements. Optional label in the middle.
+
+```lua
+Section:Divider()
+Section:Divider("Combat")
+```
+
+`Divider:SetVisibility(bool)`
+
+---
+
+## Progress
+
+A read-only progress bar you update manually via `:Set()`.
+
+```lua
+local Bar = Section:Progress({
+    Name    = "Health",
+    Flag    = "HealthBar",
+    Min     = 0,
+    Max     = 100,
+    Default = 100,
+    Suffix  = "%",
+})
+
+Bar:Set(75)
+Bar:Get()
+Bar:SetVisibility(bool)
+```
+
+---
+
 ## Set Font
 
 Call after `UI:Window()`. Pass any Roblox font asset ID.
@@ -311,6 +361,8 @@ local Window = UI:Window({
     Logo     = "77218680285262",
     FadeTime = 0.3,
 })
+
+UI:SetFont(12187375716)
 
 local Watermark   = UI:Watermark("my script")
 local KeybindList = UI:KeybindList()
