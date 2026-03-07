@@ -368,13 +368,15 @@ local Watermark   = UI:Watermark("my script")
 local KeybindList = UI:KeybindList()
 local Settings    = UI:CreateSettingsPage(Window, Watermark, KeybindList)
 
-local CombatPage  = Window:Page({ Name = "Combat", SubPages = true })
-local PlayerPage  = Window:Page({ Name = "Player", Columns = 2 })
+local CombatPage = Window:Page({ Name = "Combat", SubPages = true })
+local PlayerPage = Window:Page({ Name = "Player", Columns = 2 })
 
-local AimbotSub   = CombatPage:SubPage({ Name = "Aimbot", Columns = 2 })
-local WeaponSub   = CombatPage:SubPage({ Name = "Weapon", Columns = 2 })
+local AimbotSub = CombatPage:SubPage({ Name = "Aimbot", Columns = 2 })
+local WeaponSub = CombatPage:SubPage({ Name = "Weapon", Columns = 2 })
 
 local AimbotSection = AimbotSub:Section({ Name = "Silent Aim", Side = 1 })
+
+AimbotSection:Divider("Targeting")
 
 local SilentAim = AimbotSection:Toggle({
     Name     = "Enabled",
@@ -418,6 +420,13 @@ AimbotSection:Dropdown({
     end,
 })
 
+AimbotSection:Divider()
+
+local IB = AimbotSection:ImageButton()
+IB:Add("Reset Bone", 6031302502, function()
+    print("Reset")
+end)
+
 local PlayerSection = PlayerPage:Section({ Name = "Movement", Side = 1 })
 
 PlayerSection:Toggle({
@@ -442,12 +451,33 @@ PlayerSection:Slider({
     end,
 })
 
+local HealthBar = PlayerSection:Progress({
+    Name    = "Health",
+    Flag    = "HealthBar",
+    Min     = 0,
+    Max     = 100,
+    Default = 100,
+    Suffix  = "%",
+})
+
+game.Players.LocalPlayer.Character.Humanoid.HealthChanged:Connect(function(hp)
+    HealthBar:Set(math.floor(hp))
+end)
+
 local MiscSection = PlayerPage:Section({ Name = "Misc", Side = 2 })
 
-MiscSection:Button():Add("Rejoin", function()
+MiscSection:Divider("Actions")
+
+local MiscButton = MiscSection:ImageButton()
+MiscButton:Add("Rejoin", 6031302502, function()
     local TS = game:GetService("TeleportService")
     local LP = game.Players.LocalPlayer
     TS:TeleportToPlaceInstance(game.PlaceId, game.JobId, LP)
+end)
+MiscButton:Add("Serverhop", 6031068421, function()
+    local TS = game:GetService("TeleportService")
+    local LP = game.Players.LocalPlayer
+    TS:Teleport(game.PlaceId, LP)
 end)
 
 UI:Notification("Loaded", "Script loaded successfully", 5)
