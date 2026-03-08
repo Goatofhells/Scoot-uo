@@ -339,7 +339,7 @@ Bar:SetVisibility(bool)
 A separate draggable button that floats at the top of the screen to toggle the whole GUI. If no icon is provided nothing is created.
 
 ```lua
-UI:MobileToggle(Window, 11626239724367)
+UI:MobileToggle(Window, 116262397243671)
 ```
 
 Pass any Roblox asset ID as the icon, or omit the call entirely if you don't need it.
@@ -375,95 +375,42 @@ local Window = UI:Window({
 })
 
 UI:SetFont(12187375716)
+UI:MobileToggle(Window, 116262397243671)
 
-local Watermark   = UI:Watermark("my script")
-local KeybindList = UI:KeybindList()
-local Settings    = UI:CreateSettingsPage(Window, Watermark, KeybindList)
+local Settings = UI:CreateSettingsPage(Window, nil, nil)
 
 local CombatPage = Window:Page({ Name = "Combat", SubPages = true })
-local PlayerPage = Window:Page({ Name = "Player", Columns = 2 })
+local Sub = CombatPage:SubPage({ Name = "Silent Aim", Columns = 2 })
+local Section = Sub:Section({ Name = "Title", Side = 1 })
 
-local AimbotSub = CombatPage:SubPage({ Name = "Aimbot", Columns = 2 })
-local WeaponSub = CombatPage:SubPage({ Name = "Weapon", Columns = 2 })
+Section:Divider("Toggles")
 
-local AimbotSection = AimbotSub:Section({ Name = "Silent Aim", Side = 1 })
-
-AimbotSection:Divider("Targeting")
-
-local SilentAim = AimbotSection:Toggle({
+local Toggle = Section:Toggle({
     Name     = "Enabled",
-    Flag     = "SilentAimEnabled",
+    Flag     = "MyFlag",
     Default  = false,
     Callback = function(Value)
-        print("Silent Aim:", Value)
+        print(Value)
     end,
 })
 
-SilentAim:Keybind({
-    Flag     = "SilentAimKeybind",
-    Default  = Enum.KeyCode.E,
-    Mode     = "Toggle",
-    Callback = function(Value)
-        print("Keybind toggled:", Value)
-    end,
-})
-
-AimbotSection:Slider({
-    Name     = "FOV Radius",
-    Flag     = "FOVRadius",
-    Min      = 1,
-    Max      = 500,
-    Default  = 75,
-    Decimals = 1,
-    Suffix   = "px",
-    Callback = function(Value)
-        print("FOV:", Value)
-    end,
-})
-
-AimbotSection:Dropdown({
-    Name     = "Bone",
-    Flag     = "AimbotBone",
-    Default  = "Head",
-    Multi    = false,
-    Items    = {"Head", "Neck", "Torso", "LeftArm", "RightArm"},
-    Callback = function(Value)
-        print("Bone:", Value)
-    end,
-})
-
-AimbotSection:Divider()
-
-local IB = AimbotSection:ImageButton()
-IB:Add("Reset Bone", 6031302502, function()
-    print("Reset")
-end)
-
-local PlayerSection = PlayerPage:Section({ Name = "Movement", Side = 1 })
-
-PlayerSection:Toggle({
-    Name     = "Speed Hack",
-    Flag     = "SpeedHack",
+local Teleport = Section:Toggle({
+    Name     = "Teleport",
+    Flag     = "TeleportEnabled",
     Default  = false,
     Callback = function(Value)
-        print("Speed Hack:", Value)
+        print(Value)
     end,
 })
 
-PlayerSection:Slider({
-    Name     = "Walk Speed",
-    Flag     = "WalkSpeed",
-    Min      = 16,
-    Max      = 500,
-    Default  = 16,
-    Decimals = 1,
-    Suffix   = "studs/s",
-    Callback = function(Value)
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-    end,
-})
+Section:Divider("Actions")
 
-local HealthBar = PlayerSection:Progress({
+local IB = Section:ImageButton()
+IB:Add("Rejoin", 6031302502, function() end)
+
+Section:Divider("Stats")
+
+local Bar = Section:Progress({
     Name    = "Health",
     Flag    = "HealthBar",
     Min     = 0,
@@ -472,25 +419,5 @@ local HealthBar = PlayerSection:Progress({
     Suffix  = "%",
 })
 
-game.Players.LocalPlayer.Character.Humanoid.HealthChanged:Connect(function(hp)
-    HealthBar:Set(math.floor(hp))
-end)
-
-local MiscSection = PlayerPage:Section({ Name = "Misc", Side = 2 })
-
-MiscSection:Divider("Actions")
-
-local MiscButton = MiscSection:ImageButton()
-MiscButton:Add("Rejoin", 6031302502, function()
-    local TS = game:GetService("TeleportService")
-    local LP = game.Players.LocalPlayer
-    TS:TeleportToPlaceInstance(game.PlaceId, game.JobId, LP)
-end)
-MiscButton:Add("Serverhop", 6031068421, function()
-    local TS = game:GetService("TeleportService")
-    local LP = game.Players.LocalPlayer
-    TS:Teleport(game.PlaceId, LP)
-end)
-
-UI:Notification("Loaded", "Script loaded successfully", 5)
+Bar:Set(75)
 ```
