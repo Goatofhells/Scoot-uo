@@ -334,6 +334,18 @@ Bar:SetVisibility(bool)
 
 ---
 
+## Mobile Toggle *(optional)*
+
+A separate draggable button that floats at the top of the screen to toggle the whole GUI. If no icon is provided nothing is created.
+
+```lua
+UI:MobileToggle(Window, 11626239724367)
+```
+
+Pass any Roblox asset ID as the icon, or omit the call entirely if you don't need it.
+
+---
+
 ## Set Font
 
 Call after `UI:Window()`. Pass any Roblox font asset ID.
