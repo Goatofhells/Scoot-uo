@@ -10,16 +10,22 @@ local UI = loadstring(game:HttpGet('https://raw.githubusercontent.com/Goatofhell
 
 ## Window
 
+`Name` and `Size` are optional. If `Name` is provided it appears above the logo in the sidebar.
+
 ```lua
 local Window = UI:Window({
     Logo     = "assetId",
+    Name     = "My Script",
     FadeTime = 0.3,
+    Size     = UDim2.new(0, 751, 0, 539),
 })
 ```
 
 ---
 
-## Watermark & Keybind List
+## Watermark & Keybind List *(optional)*
+
+Both are optional. If you don't need them, skip them and pass `nil` to `CreateSettingsPage`.
 
 ```lua
 local Watermark   = UI:Watermark("text")
@@ -37,6 +43,34 @@ KeybindList:SetVisibility(true)
 local Settings = UI:CreateSettingsPage(Window, Watermark, KeybindList)
 ```
 
+Pass `nil` for Watermark and/or KeybindList if you didn't create them:
+
+```lua
+local Settings = UI:CreateSettingsPage(Window, nil, nil)
+```
+
+---
+
+## Set Font *(optional)*
+
+Call after `UI:Window()`. Pass any Roblox font asset ID.
+
+```lua
+UI:SetFont(12187375716)
+```
+
+---
+
+## Mobile Toggle *(optional)*
+
+A separate draggable image button that floats at the top of the screen to toggle the whole GUI. If no icon is provided nothing is created and no error is thrown.
+
+```lua
+UI:MobileToggle(Window, 116262397243671)
+```
+
+Pass any Roblox asset ID as the icon number — no `rbxassetid://` prefix needed. Omit the call entirely if you don't need it.
+
 ---
 
 ## Page
@@ -49,6 +83,8 @@ local Page = Window:Page({ Name = "Combat", SubPages = true })
 ---
 
 ## SubPage
+
+Requires the page to have `SubPages = true`.
 
 ```lua
 local Sub = Page:SubPage({ Name = "Silent Aim", Columns = 2 })
@@ -178,6 +214,56 @@ Button:Add("Reset", function() end)
 
 ---
 
+## Image Button
+
+Same as Button but each entry has an icon. Pass a Roblox asset ID as the icon number.
+
+```lua
+local IB = Section:ImageButton()
+IB:Add("Rejoin",   6031302502, function() end)
+IB:Add("Teleport", 6031068421, function() end)
+```
+
+`IB:Add(label, iconId, callback)` → `NewButton`
+`NewButton:Press()`
+`NewButton:SetVisibility(bool)`
+
+---
+
+## Divider
+
+A horizontal line to visually separate elements. Optionally shows a label in the center.
+
+```lua
+Section:Divider()
+Section:Divider("Combat")
+```
+
+`Divider:SetVisibility(bool)`
+
+---
+
+## Progress
+
+A read-only progress bar. Update it manually via `:Set()`.
+
+```lua
+local Bar = Section:Progress({
+    Name    = "Health",
+    Flag    = "HealthBar",
+    Min     = 0,
+    Max     = 100,
+    Default = 100,
+    Suffix  = "%",
+})
+
+Bar:Set(75)
+Bar:Get()
+Bar:SetVisibility(true)
+```
+
+---
+
 ## Label
 
 ```lua
@@ -284,78 +370,6 @@ UI:DeleteConfig("name")
 
 ---
 
-## Image Button
-
-Same as Button but with an icon. Pass a Roblox asset ID as the icon.
-
-```lua
-local IB = Section:ImageButton()
-IB:Add("Teleport", 6031068421, function() end)
-IB:Add("Rejoin",   6031302502, function() end)
-```
-
-`IB:Add(label, iconId, callback)` → `NewButton`
-`NewButton:Press()`
-`NewButton:SetVisibility(bool)`
-
----
-
-## Divider
-
-A horizontal line to separate elements. Optional label in the middle.
-
-```lua
-Section:Divider()
-Section:Divider("Combat")
-```
-
-`Divider:SetVisibility(bool)`
-
----
-
-## Progress
-
-A read-only progress bar you update manually via `:Set()`.
-
-```lua
-local Bar = Section:Progress({
-    Name    = "Health",
-    Flag    = "HealthBar",
-    Min     = 0,
-    Max     = 100,
-    Default = 100,
-    Suffix  = "%",
-})
-
-Bar:Set(75)
-Bar:Get()
-Bar:SetVisibility(bool)
-```
-
----
-
-## Mobile Toggle *(optional)*
-
-A separate draggable button that floats at the top of the screen to toggle the whole GUI. If no icon is provided nothing is created.
-
-```lua
-UI:MobileToggle(Window, 116262397243671)
-```
-
-Pass any Roblox asset ID as the icon, or omit the call entirely if you don't need it.
-
----
-
-## Set Font
-
-Call after `UI:Window()`. Pass any Roblox font asset ID.
-
-```lua
-UI:SetFont(12187375716)
-```
-
----
-
 ## Unload
 
 ```lua
@@ -371,6 +385,7 @@ local UI = loadstring(game:HttpGet('https://raw.githubusercontent.com/Goatofhell
 
 local Window = UI:Window({
     Logo     = "77218680285262",
+    Name     = "My Script",
     FadeTime = 0.3,
 })
 
